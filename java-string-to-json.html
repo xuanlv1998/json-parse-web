@@ -1,0 +1,363 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Java string to JSON object | Json parse</title>
+    <meta name="description" content="Experience the best in class JSON parsing, formatting, and conversion tools at Json parse">
+    <!-- Add other SEO-relevant meta tags here -->
+    <!-- jQuery文件。务必在bootstrap.min.js 之前引入 -->
+    <link href="static/css/json-style.css" rel="stylesheet">
+    <link rel="stylesheet" href="static/css/font-awesome.min.css">
+
+    <link rel="stylesheet" href="static/css/default.min.css">
+    <script src="static/js/highlight.min.js"></script>
+
+    <style>
+ /* Reset and General Styles */
+body, h2, h3, p, ul, ol {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+body {
+    background-color: #f9f9f9;
+    color: #333;
+    line-height: 1.6;
+}
+
+.container {
+    max-width: 1200px; /* 控制最大宽度 */
+    width: 90%; /* 默认宽度为屏幕宽度的90% */
+    margin: auto; /* 水平居中 */
+    overflow: hidden;
+    padding: 20px 0; /* 增加上下的空间 */
+}
+
+/* Header Styles */
+header {
+    background-color: #4CAF50;
+    color: #fff;
+    padding: 1rem 0;
+    text-align: center;
+}
+
+header nav ul {
+    padding: 0;
+    list-style: none;
+}
+
+header nav ul li {
+    display: inline;
+    margin: 0 15px;
+}
+
+header nav ul li a {
+    color: #fff;
+    text-decoration: none;
+    font-size: 1.1em;
+}
+
+/* Section Styles */
+section {
+    background-color: #fff;
+    border: 1px solid #ddd;
+    padding: 20px;
+    margin: 20px 0;
+    border-radius: 8px;
+}
+
+h1 {
+    //background-color: #e7e7e7;
+    padding: 10px;
+    //margin: -20px -20px 20px -20px;
+    //border-bottom: 1px solid #ddd;
+}
+
+h2 {
+    background-color: #e7e7e7;
+    padding: 10px;
+    margin: -20px -20px 20px -20px;
+    border-bottom: 1px solid #ddd;
+}
+
+h3 {
+    margin-bottom: 10px;
+    color: #4CAF50;
+}
+
+p, ul, ol {
+    margin-bottom: 10px;
+    padding: 0 15px;
+}
+
+ul, ol {
+    padding-left: 20px;
+}
+
+/* JSON Tool Experience Section */
+
+#json-tool-experience {
+    height: 100vh; /* 保持最小高度为视口高度，确保足够的空间 */
+    padding: 20px; /* 添加一些内边距以防止内容溢出 */
+    //display: flex;
+    align-items: stretch; /* 确保子元素拉伸填满高度 */
+}
+
+.tool-container {
+    display: flex;
+    width: 100%; /* 确保 tool-container 占据整个区域宽度 */
+    //height: 92%; /* tool-container 高度自适应 */
+    height: calc(100% - 40px); /* 减去内边距 */
+    //gap: 20px;
+}
+
+.input-area, .output-area {
+    flex-basis: 50%; /* 每个区域分配50%的宽度 */
+    flex-grow: 0; /* 阻止根据内容扩张 */
+    flex-shrink: 0; /* 阻止根据内容收缩 */
+    display: flex;
+    flex-direction: column;
+    overflow: hidden; /* 防止内容溢出 */
+}
+
+.input-area textarea, .output-area .formatted-json {
+    width: 98%;
+    height: 100%;
+    overflow: auto; /* 超出内容时显示滚动条 */
+    resize: none;
+    padding: 4px;
+    border: 1px solid #ccc;
+}
+
+/* Textarea and Formatted JSON Styles */
+.input-area textarea {
+    font-size: 1em;
+    line-height: 1.5;
+}
+
+
+/* FAQ Section */
+#faq .faq-item {
+    border: 1px solid #ccc;
+    padding: 15px;
+    margin: 20px 0;
+    border-radius: 8px;
+}
+
+/* Mobile Responsiveness */
+@media screen and (max-width: 768px) {
+    .container {
+        width: 95%;
+    }
+
+    #json-tool-experience {
+        height: auto; /* 移动设备上高度自适应 */
+        //padding: 10px; /* 在移动设备上减少内边距 */
+    }
+
+    header nav ul li {
+        display: block;
+        margin: 10px 0;
+    }
+
+    .tool-container {
+        flex-direction: column; /* 在移动设备上堆叠这两个区域 */
+    }
+
+    .input-area, .output-area {
+        flex-basis: auto; /* 移动设备上自动调整宽度 */
+    }
+}
+
+
+/* Footer Styles */
+footer {
+    background-color: #4CAF50; /* 与 header 风格保持一致 */
+    color: #fff;
+    text-align: center;
+    padding: 20px 0;
+    margin-top: 30px; /* 在内容和 footer 之间添加一些空间 */
+    font-size: 0.9em;
+}
+
+footer a {
+    color: #fff;
+    text-decoration: none;
+}
+
+footer a:hover {
+    text-decoration: underline;
+}
+
+
+/* Parsing JSON Data Section Styles */
+#parsing-json-data {
+    background-color: #f4f4f4;
+    border: 1px solid #ddd;
+    padding: 20px;
+    margin: 20px 0;
+    border-radius: 8px;
+}
+
+#understanding-json h3 {
+    color: #0275d8;
+}
+
+
+
+
+    </style>
+</head>
+<body>
+
+<div class="container">
+
+
+    <!-- Header Section -->
+    <header>
+        <nav>
+            <img src="static/picture/96.jpg" alt="Json parse Logo" id="logo">
+            <ul>
+                <li><a href="parsing-json.html" target="_blank">Parsing JSON Data</a></li>
+                <li><a href="json-to-xml.html" target="_blank">JSON to XML</a></li>
+                <li><a href="xml-to-json.html" target="_blank">XML to JSON</a></li>
+                <li><a href="json-compression.html" target="_blank">JSON Compression</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <!-- Content for Introduction to JSON, JSON Syntax, and JSON vs XML sections will follow in subsequent responses. -->
+
+    <h1>Java String to JSON Object</h1>
+
+    <!-- Introduction to JSON Section -->
+    <section id="introduction-json">
+        <h2>Java String to JSON Object
+        </h2>
+
+        <p>How to parse a string (which contains a JSON structure) into a JSON object? Here are a few ways to do it. Please refer to the following article for specific details.
+
+            </p>
+
+        <p>
+            To convert a string to a JSON object, you can use different Java libraries. Below are examples using three different libraries: Gson library, JSON-Simple library, and Jackson library. These libraries all provide functionality to convert a string into a JSON object.</p>
+
+        <h3>Gson library
+
+        </h3>
+
+        <p>First, let's take a look at an example using the Gson library:
+
+        </p>
+
+        <pre><code class="language-java">import com.google.gson.Gson;
+
+public class JsonStringToJsonObjectExample {
+    public static void main(String args[]) {
+        String jsonString = "{\"domain\":\"json.cn\",\"author\":\"xingstarx\"}";
+        Gson gson = new Gson();
+        WebSite website = gson.fromJson(jsonString, WebSite.class);
+        System.out.println(website.getDomain());
+        System.out.println(website.getAuthor());
+    }
+}
+</code></pre>
+
+
+        <h3>JSON-Simple library
+        </h3>
+
+        <p>Next is an example using the JSON-Simple library:
+
+        </p>
+
+        <pre><code class="language-java">import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
+import org.json.simple.parser.ParseException;
+
+public class JsonStringToJsonObjectExample {
+    public static void main(String args[]) {
+        String jsonString = "{\"domain\":\"json.cn\",\"author\":\"xingstarx\"}";
+        JSONParser parser = new JSONParser();
+        try {
+            JSONObject json = (JSONObject) parser.parse(jsonString);
+            System.out.println(json.get("domain"));
+            System.out.println(json.get("author"));
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+    }
+}
+</code></pre>
+
+
+
+        <h3>
+            Jackson library
+
+        </h3>
+    <p>Finally, here is an example using the Jackson library:
+    </p>
+
+        <pre><code class="language-java">import com.fasterxml.jackson.databind.ObjectMapper;
+
+public class JsonStringToJsonObjectExample {
+    public static void main(String args[]) {
+        String jsonString = "{\"domain\":\"json.cn\",\"author\":\"xingstarx\"}";
+        ObjectMapper mapper = new ObjectMapper();
+        try {
+            WebSite website = mapper.readValue(jsonString, WebSite.class);
+            System.out.println(website.getDomain());
+            System.out.println(website.getAuthor());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+}</code></pre>
+
+        <p>These examples demonstrate how to convert strings to JSON objects using different Java libraries. You can choose a suitable library according to your own needs to convert strings to JSON objects.</p>
+    </section>
+
+
+
+
+
+
+
+
+
+
+    <section id="relative-article">
+        <h2>Relative Articles</h2>
+        <p>
+            <a href="why_json_preferred_over_xml.html" target="_blank">Why JSON preferred over XML?</a>&nbsp;&nbsp;&nbsp;
+            <a href="what-are-the-best-practices-for-json-compression.html" target="_blank">Optimizing Efficiency: Best Practices for JSON Compression</a>&nbsp;&nbsp;&nbsp;&nbsp;
+            <a href="mastering-json-compression-techniques-tools-performance.html" target="_blank">Mastering JSON Compression: Techniques, Tools, and Performance Optimization</a>&nbsp;&nbsp;&nbsp;&nbsp;
+            <a href="java-object-to-json-string.html" target="_blank">Java Object to JSON String</a>&nbsp;&nbsp;&nbsp;&nbsp;
+        </p>
+    </section>
+
+    <!-- Footer Section -->
+    <footer>
+        <p>&copy; 2023 Json parse. All rights reserved.</p>
+        <p><a href="index.html">Visit our website</a></p>
+        <p>
+            <a href="#">Terms of Service</a> |
+            <a href="#">Privacy Policy</a>
+        </p>
+    </footer>
+
+
+</div>
+
+<!--<script src="./js/brain2.js"></script>-->
+
+<script>
+      hljs.highlightAll();
+    </script>
+
+</body>
+</html>

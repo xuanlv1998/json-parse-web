@@ -1,0 +1,362 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JSON parse - Your Ultimate JSON Tool</title>
+    <meta name="description" content="Experience the best in class JSON parsing, formatting, and conversion tools at Json parse">
+    <!-- Add other SEO-relevant meta tags here -->
+    <!-- jQuery文件。务必在bootstrap.min.js 之前引入 -->
+    <link href="static/css/json-style.css" rel="stylesheet">
+    <link rel="stylesheet" href="static/css/font-awesome.min.css">
+    <script src="static/js/jquery.min.js"></script>
+    <script src="static/js/clipboard.min.js"></script>
+    <script src="static/js/FileSaver.min.js"></script>
+    <script src="static/js/jquery.json2xml.js"></script>
+    <style>
+ /* Reset and General Styles */
+body, h2, h3, p, ul, ol {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+body {
+    background-color: #f9f9f9;
+    color: #333;
+    line-height: 1.6;
+}
+
+.container {
+    max-width: 1200px; /* 控制最大宽度 */
+    width: 90%; /* 默认宽度为屏幕宽度的90% */
+    margin: auto; /* 水平居中 */
+    overflow: hidden;
+    padding: 20px 0; /* 增加上下的空间 */
+}
+
+/* Header Styles */
+header {
+    background-color: #4CAF50;
+    color: #fff;
+    padding: 1rem 0;
+    text-align: center;
+}
+
+header nav ul {
+    padding: 0;
+    list-style: none;
+}
+
+header nav ul li {
+    display: inline;
+    margin: 0 15px;
+}
+
+header nav ul li a {
+    color: #fff;
+    text-decoration: none;
+    font-size: 1.1em;
+}
+
+/* Section Styles */
+section {
+    background-color: #fff;
+    border: 1px solid #ddd;
+    padding: 20px;
+    margin: 20px 0;
+    border-radius: 8px;
+}
+
+h2 {
+    background-color: #e7e7e7;
+    padding: 10px;
+    margin: -20px -20px 20px -20px;
+    border-bottom: 1px solid #ddd;
+}
+
+h3 {
+    margin-bottom: 10px;
+    color: #4CAF50;
+}
+
+p, ul, ol {
+    margin-bottom: 10px;
+    padding: 0 15px;
+}
+
+ul, ol {
+    padding-left: 20px;
+}
+
+/* JSON Tool Experience Section */
+
+#json-tool-experience {
+    height: 100vh; /* 保持最小高度为视口高度，确保足够的空间 */
+    padding: 20px; /* 添加一些内边距以防止内容溢出 */
+    //display: flex;
+    align-items: stretch; /* 确保子元素拉伸填满高度 */
+}
+
+.tool-container {
+    display: flex;
+    width: 100%; /* 确保 tool-container 占据整个区域宽度 */
+    //height: 92%; /* tool-container 高度自适应 */
+    height: calc(100% - 40px); /* 减去内边距 */
+    //gap: 20px;
+}
+
+.input-area, .output-area {
+    flex-basis: 50%; /* 每个区域分配50%的宽度 */
+    flex-grow: 0; /* 阻止根据内容扩张 */
+    flex-shrink: 0; /* 阻止根据内容收缩 */
+    display: flex;
+    flex-direction: column;
+    overflow: hidden; /* 防止内容溢出 */
+}
+
+.input-area textarea, .output-area .formatted-json {
+    width: 98%;
+    height: 100%;
+    overflow: auto; /* 超出内容时显示滚动条 */
+    resize: none;
+    padding: 4px;
+    border: 1px solid #ccc;
+}
+
+/* Textarea and Formatted JSON Styles */
+.input-area textarea {
+    font-size: 1em;
+    line-height: 1.5;
+}
+
+
+/* FAQ Section */
+#faq .faq-item {
+    border: 1px solid #ccc;
+    padding: 15px;
+    margin: 20px 0;
+    border-radius: 8px;
+}
+
+/* Mobile Responsiveness */
+@media screen and (max-width: 768px) {
+    .container {
+        width: 95%;
+    }
+
+    #json-tool-experience {
+        height: auto; /* 移动设备上高度自适应 */
+        //padding: 10px; /* 在移动设备上减少内边距 */
+    }
+
+    header nav ul li {
+        display: block;
+        margin: 10px 0;
+    }
+
+    .tool-container {
+        flex-direction: column; /* 在移动设备上堆叠这两个区域 */
+    }
+
+    .input-area, .output-area {
+        flex-basis: auto; /* 移动设备上自动调整宽度 */
+    }
+}
+
+
+/* Footer Styles */
+footer {
+    background-color: #4CAF50; /* 与 header 风格保持一致 */
+    color: #fff;
+    text-align: center;
+    padding: 20px 0;
+    margin-top: 30px; /* 在内容和 footer 之间添加一些空间 */
+    font-size: 0.9em;
+}
+
+footer a {
+    color: #fff;
+    text-decoration: none;
+}
+
+footer a:hover {
+    text-decoration: underline;
+}
+
+
+    </style>
+</head>
+<body>
+
+<div class="container">
+
+
+    <!-- Header Section -->
+    <header>
+        <nav>
+            <img src="static/picture/96.jpg" alt="Json parse Logo" id="logo">
+            <ul>
+                <li><a href="parsing-json.html" target="_blank">Parsing JSON Data</a></li>
+                <li><a href="json-to-xml.html" target="_blank">JSON to XML</a></li>
+                <li><a href="xml-to-json.html" target="_blank">XML to JSON</a></li>
+                <li><a href="json-compression.html" target="_blank">JSON Compression</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <!-- JSON Tool Experience Section -->
+    <section id="json-tool-experience">
+        <h2>JSON Tool Experience</h2>
+        <div class="tool-container">
+            <div class="input-area">
+                <h3>Enter Your JSON String</h3>
+                <textarea id="json-src" placeholder="Paste your JSON string here..."></textarea>
+            </div>
+            <div class="output-area">
+                <h3>Formatted JSON Output</h3>
+                <div class="formatted-json">
+                    <div class="tool">
+                        <a href="#" class="tip zip" title="" data-placement="bottom" data-original-title="zip" style="color:#999;"><i class="fa fa-database"></i></a>
+                        <a href="#" class="tip xml" title="" data-placement="bottom" data-original-title="convert to xml" style="color:#999;"><i class="fa fa-file-excel-o"></i></a>
+                        <!--                        <a href="#" class="tip shown" title="" data-placement="bottom"-->
+                        <!--                           data-original-title="show line numbers"><i class="fa fa-sort-amount-asc"></i></a>-->
+                        <a href="#" class="tip clear" title="" data-placement="bottom" data-original-title="clear"><i class="fa fa-trash"></i></a>
+                        <a href="#" class="tip save" title="" data-placement="bottom" data-original-title="save"><i class="fa fa-download"></i></a>
+                        <a href="#" class="tip copy" title="" data-clipboard-target="#json-target" data-placement="bottom" data-original-title="copy"><i class="fa fa-copy"></i></a>
+                        <a href="#" class="tip compress" title="" data-placement="bottom" data-original-title="compress"><i class="fa fa-compress"></i></a>
+                    </div>
+
+                    <!-- Formatted JSON Output will be shown here -->
+                    <p class="editor-tip">Click on key and value to edit</p>
+                    <div id="line-num">
+                    </div>
+                    <div id="json-target"></div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="recommend-article">
+        <h2>Recommend Articles</h2>
+        <p>
+            <a href="why_json_preferred_over_xml.html" target="_blank">Why JSON preferred over XML?</a>&nbsp;&nbsp;&nbsp;&nbsp;
+            <a href="mastering-json-compression-techniques-tools-performance.html" target="_blank">Mastering JSON Compression: Techniques, Tools, and Performance Optimization</a>&nbsp;&nbsp;&nbsp;&nbsp;
+            <a href="what-are-the-best-practices-for-json-compression.html" target="_blank">Optimizing Efficiency: Best Practices for JSON Compression</a>&nbsp;&nbsp;&nbsp;&nbsp;
+            <a href="java-string-to-json.html" target="_blank">Java String to JSON Object</a>&nbsp;&nbsp;&nbsp;&nbsp;
+            <a href="java-object-to-json-string.html" target="_blank">Java Object to JSON String</a>&nbsp;&nbsp;&nbsp;&nbsp;
+        </p>
+    </section>
+
+    <!-- Content for Introduction to JSON, JSON Syntax, and JSON vs XML sections will follow in subsequent responses. -->
+
+    <!-- Introduction to JSON Section -->
+    <section id="introduction-json">
+        <h2>Introduction to JSON</h2>
+        <p>JSON (JavaScript Object Notation) is a lightweight data-interchange format, renowned for its simplicity, readability, and language independence. Originating from a subset of JavaScript, JSON has become a fundamental part of modern web development.</p>
+
+        <h3>What is JSON?</h3>
+        <p>JSON stands for JavaScript Object Notation. It is a text format that is completely language independent but utilizes conventions familiar to programmers of the C-family of languages. This interoperability has established JSON as an ideal data-interchange language.</p>
+
+        <h3>The Evolution of JSON</h3>
+        <p>The JSON format was originally specified by Douglas Crockford, evolving from the need for a more efficient data-interchange format. Over the years, JSON has become integral to web applications for its ease of use in transmitting data between servers and web applications.</p>
+
+        <h3>Why Choose JSON?</h3>
+        <p>JSON's popularity stems from its simplicity and practicality. Being both easy to read and write for humans, and simple to parse and generate for machines, JSON serves as a versatile format suitable for a wide range of applications.</p>
+    </section>
+
+    <!-- JSON Syntax Section -->
+    <section id="json-syntax">
+        <h2>JSON Syntax</h2>
+        <p>Understanding the syntax of JSON is crucial for effectively working with this data format. JSON's syntax is both accessible and efficient, making it a preferred choice for web developers.</p>
+
+        <h3>Core Syntax Rules</h3>
+        <p>JSON syntax is a subset of the JavaScript syntax. Data in JSON is formatted in name/value pairs, separated by commas, with curly braces holding objects and square brackets holding arrays.</p>
+
+        <h3>Key Features of JSON Syntax</h3>
+        <p>The key features of JSON syntax include its ability to represent simple data structures and complex hierarchies, making it highly versatile. JSON's text format is easy to read and write, and easy for machines to parse and generate, striking a balance between human and machine readability.</p>
+
+        <h3>Strengths of JSON Syntax</h3>
+        <p>One of JSON's significant strengths is its minimalism. The lack of verbosity in JSON's structure, compared to XML, makes it easier to write and interpret by developers, leading to faster processing and lower overheads in data interchange.</p>
+    </section>
+
+
+    <!-- JSON vs XML Section -->
+    <section id="json-vs-xml">
+        <h2>JSON vs XML</h2>
+        <p>In the world of data interchange, JSON and XML are two prominent formats. Understanding their differences and similarities is key to choosing the right format for your data needs.</p>
+
+        <h3>Similarities Between JSON and XML</h3>
+        <p>Both JSON and XML are self-describing formats that are human-readable and hierarchical. They can be parsed and used by many programming languages and are capable of representing complex data structures.</p>
+
+        <h3>Differences Between JSON and XML</h3>
+        <p>The main differences lie in syntax and usability. JSON is less verbose, does not use end tags, and can handle arrays natively. It is generally considered faster to read and write, and easier to parse than XML.</p>
+
+        <h3>Advantages of JSON over XML</h3>
+        <p>JSON's minimalism and efficiency in parsing make it a better choice for web applications, especially when speed and simplicity are paramount. Its compatibility with JavaScript and ease of integration into web platforms give it an edge over XML in modern web development.</p>
+    </section>
+
+
+    <!-- FAQ Section -->
+    <section id="faq">
+        <h2>Frequently Asked Questions (FAQs)</h2>
+
+        <div class="faq-item">
+            <h3>What is JSON used for in web development?</h3>
+            <p>JSON is primarily used for transmitting data between a server and a web application. Its lightweight and easy-to-parse nature makes it ideal for AJAX requests and responses, and for configuring and transmitting data in web applications.</p>
+        </div>
+
+        <div class="faq-item">
+            <h3>Is JSON only compatible with JavaScript?</h3>
+            <p>No, while JSON stands for JavaScript Object Notation, it is a language-independent format. JSON can be used with many programming languages, including Python, Ruby, Java, and more, due to its simple and universal structure.</p>
+        </div>
+
+        <div class="faq-item">
+            <h3>How does JSON differ from XML in terms of data representation?</h3>
+            <p>JSON is less verbose and more straightforward than XML. JSON represents data in key-value pairs and does not use end tags, making it simpler and faster to parse. XML, while also hierarchical, is more suited for complex document structures.</p>
+        </div>
+
+        <div class="faq-item">
+            <h3>Can JSON be used for storing data?</h3>
+            <p>Yes, JSON is often used for storing data due to its compact format and ease of conversion to JavaScript objects. It is commonly used in configurations, settings, and exchanging information between different parts of a web application.</p>
+        </div>
+
+        <div class="faq-item">
+            <h3>What are the typical file extensions for JSON files?</h3>
+            <p>JSON files typically use the .json file extension. However, JSON data can also be included inline within JavaScript files, usually with a .js extension, particularly in web development contexts.</p>
+        </div>
+
+        <div class="faq-item">
+            <h3>Are there any security concerns when using JSON in web applications?</h3>
+            <p>While JSON itself is secure, it must be properly handled to prevent security vulnerabilities such as injection attacks. Validating and sanitizing JSON data on both the client and server sides are essential practices in secure web development.</p>
+        </div>
+    </section>
+
+    <!-- Footer Section -->
+    <footer>
+        <p>&copy; 2023 Json parse. All rights reserved.</p>
+        <p><a href="">Visit our website</a></p>
+        <p>
+            <a href="#">Terms of Service</a> |
+            <a href="#">Privacy Policy</a>
+        </p>
+    </footer>
+
+
+</div>
+
+<script src="static/js/brain2.js"></script>
+
+<script>
+    window.onload = function() {
+      var str = "{    \"sites\": [    { \"name\":\"JSON Online Parse\" , \"url\":\"www.json.cn\" },     { \"name\":\"Google\" , \"url\":\"www.google.com\" },     { \"name\":\"Introducing JSON\" , \"url\":\"www.json.org\" }    ]}";
+      $('#json-src').val(str);
+      $('#json-src').keyup();
+      checkDomain();
+    }
+
+</script>
+
+</body>
+</html>

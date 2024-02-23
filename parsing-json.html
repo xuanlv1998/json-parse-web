@@ -1,0 +1,438 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Json parse - Your Ultimate JSON Tool</title>
+    <meta name="description" content="Experience the best in class JSON parsing, formatting, and conversion tools at Json parse">
+    <!-- Add other SEO-relevant meta tags here -->
+    <!-- jQuery文件。务必在bootstrap.min.js 之前引入 -->
+    <link href="static/css/json-style.css" rel="stylesheet">
+    <link rel="stylesheet" href="static/css/font-awesome.min.css">
+    <script src="static/js/jquery.min.js"></script>
+    <script src="static/js/clipboard.min.js"></script>
+    <script src="static/js/FileSaver.min.js"></script>
+    <script src="static/js/jquery.json2xml.js"></script>
+    <style>
+ /* Reset and General Styles */
+body, h2, h3, p, ul, ol {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+body {
+    background-color: #f9f9f9;
+    color: #333;
+    line-height: 1.6;
+}
+
+.container {
+    max-width: 1200px; /* 控制最大宽度 */
+    width: 90%; /* 默认宽度为屏幕宽度的90% */
+    margin: auto; /* 水平居中 */
+    overflow: hidden;
+    padding: 20px 0; /* 增加上下的空间 */
+}
+
+/* Header Styles */
+header {
+    background-color: #4CAF50;
+    color: #fff;
+    padding: 1rem 0;
+    text-align: center;
+}
+
+header nav ul {
+    padding: 0;
+    list-style: none;
+}
+
+header nav ul li {
+    display: inline;
+    margin: 0 15px;
+}
+
+header nav ul li a {
+    color: #fff;
+    text-decoration: none;
+    font-size: 1.1em;
+}
+
+/* Section Styles */
+section {
+    background-color: #fff;
+    border: 1px solid #ddd;
+    padding: 20px;
+    margin: 20px 0;
+    border-radius: 8px;
+}
+
+h2 {
+    background-color: #e7e7e7;
+    padding: 10px;
+    margin: -20px -20px 20px -20px;
+    border-bottom: 1px solid #ddd;
+}
+
+h3 {
+    margin-bottom: 10px;
+    color: #4CAF50;
+}
+
+p, ul, ol {
+    margin-bottom: 10px;
+    padding: 0 15px;
+}
+
+ul, ol {
+    padding-left: 20px;
+}
+
+/* JSON Tool Experience Section */
+
+#json-tool-experience {
+    height: 100vh; /* 保持最小高度为视口高度，确保足够的空间 */
+    padding: 20px; /* 添加一些内边距以防止内容溢出 */
+    //display: flex;
+    align-items: stretch; /* 确保子元素拉伸填满高度 */
+}
+
+.tool-container {
+    display: flex;
+    width: 100%; /* 确保 tool-container 占据整个区域宽度 */
+    //height: 92%; /* tool-container 高度自适应 */
+    height: calc(100% - 40px); /* 减去内边距 */
+    //gap: 20px;
+}
+
+.input-area, .output-area {
+    flex-basis: 50%; /* 每个区域分配50%的宽度 */
+    flex-grow: 0; /* 阻止根据内容扩张 */
+    flex-shrink: 0; /* 阻止根据内容收缩 */
+    display: flex;
+    flex-direction: column;
+    overflow: hidden; /* 防止内容溢出 */
+}
+
+.input-area textarea, .output-area .formatted-json {
+    width: 98%;
+    height: 100%;
+    overflow: auto; /* 超出内容时显示滚动条 */
+    resize: none;
+    padding: 4px;
+    border: 1px solid #ccc;
+}
+
+/* Textarea and Formatted JSON Styles */
+.input-area textarea {
+    font-size: 1em;
+    line-height: 1.5;
+}
+
+
+/* FAQ Section */
+#faq .faq-item {
+    border: 1px solid #ccc;
+    padding: 15px;
+    margin: 20px 0;
+    border-radius: 8px;
+}
+
+/* Mobile Responsiveness */
+@media screen and (max-width: 768px) {
+    .container {
+        width: 95%;
+    }
+
+    #json-tool-experience {
+        height: auto; /* 移动设备上高度自适应 */
+        //padding: 10px; /* 在移动设备上减少内边距 */
+    }
+
+    header nav ul li {
+        display: block;
+        margin: 10px 0;
+    }
+
+    .tool-container {
+        flex-direction: column; /* 在移动设备上堆叠这两个区域 */
+    }
+
+    .input-area, .output-area {
+        flex-basis: auto; /* 移动设备上自动调整宽度 */
+    }
+}
+
+
+/* Footer Styles */
+footer {
+    background-color: #4CAF50; /* 与 header 风格保持一致 */
+    color: #fff;
+    text-align: center;
+    padding: 20px 0;
+    margin-top: 30px; /* 在内容和 footer 之间添加一些空间 */
+    font-size: 0.9em;
+}
+
+footer a {
+    color: #fff;
+    text-decoration: none;
+}
+
+footer a:hover {
+    text-decoration: underline;
+}
+
+/* Parsing JSON Data Section Styles */
+#parsing-json-data {
+    background-color: #f4f4f4;
+    border: 1px solid #ddd;
+    padding: 20px;
+    margin: 20px 0;
+    border-radius: 8px;
+}
+
+#parsing-json-data h3 {
+    color: #0275d8;
+}
+
+#parsing-json-data pre {
+    background-color: #e7e7e7;
+    border: 1px solid #ccc;
+    padding: 10px;
+    border-radius: 4px;
+    overflow-x: auto; /* For wider code blocks */
+}
+
+#parsing-json-data code {
+    font-family: 'Courier New', Courier, monospace;
+}
+
+
+    </style>
+</head>
+<body>
+
+<div class="container">
+
+
+    <!-- Header Section -->
+    <header>
+        <nav>
+            <img src="static/picture/96.jpg" alt="Json parse Logo" id="logo">
+            <ul>
+                <li><a href="" target="_blank">Parsing JSON Data</a></li>
+                <li><a href="json-to-xml.html" target="_blank">JSON to XML</a></li>
+                <li><a href="xml-to-json.html" target="_blank">XML to JSON</a></li>
+                <li><a href="json-compression.html" target="_blank">JSON Compression</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <!-- JSON Tool Experience Section -->
+    <section id="json-tool-experience">
+        <h2>JSON Tool Experience</h2>
+        <div class="tool-container">
+            <div class="input-area">
+                <h3>Enter Your JSON String</h3>
+                <textarea id="json-src" placeholder="Paste your JSON string here..."></textarea>
+            </div>
+            <div class="output-area">
+                <h3>Formatted JSON Output</h3>
+                <div class="formatted-json">
+
+                    <div class="tool">
+                        <a href="#" class="tip zip" title="" data-placement="bottom" data-original-title="zip" style="color:#999;"><i class="fa fa-database"></i></a>
+                        <a href="#" class="tip xml" title="" data-placement="bottom" data-original-title="convert to xml" style="color:#999;"><i class="fa fa-file-excel-o"></i></a>
+<!--                        <a href="#" class="tip shown" title="" data-placement="bottom"-->
+<!--                           data-original-title="show line numbers"><i class="fa fa-sort-amount-asc"></i></a>-->
+                        <a href="#" class="tip clear" title="" data-placement="bottom" data-original-title="clear"><i class="fa fa-trash"></i></a>
+                        <a href="#" class="tip save" title="" data-placement="bottom" data-original-title="save"><i class="fa fa-download"></i></a>
+                        <a href="#" class="tip copy" title="" data-clipboard-target="#json-target" data-placement="bottom" data-original-title="copy"><i class="fa fa-copy"></i></a>
+                        <a href="#" class="tip compress" title="" data-placement="bottom" data-original-title="compress"><i class="fa fa-compress"></i></a>
+                    </div>
+
+                    <!-- Formatted JSON Output will be shown here -->
+                    <p class="editor-tip">Click on key and value to edit</p>
+                    <div id="line-num">
+                    </div>
+                    <div id="json-target"></div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Content for Introduction to JSON, JSON Syntax, and JSON vs XML sections will follow in subsequent responses. -->
+
+    <!-- Introduction to JSON Section -->
+    <section id="introduction-json">
+        <h2>Introduction to JSON</h2>
+        <p>JSON (JavaScript Object Notation) is a lightweight data-interchange format, renowned for its simplicity, readability, and language independence. Originating from a subset of JavaScript, JSON has become a fundamental part of modern web development.</p>
+
+        <h3>What is JSON?</h3>
+        <p>JSON stands for JavaScript Object Notation. It is a text format that is completely language independent but utilizes conventions familiar to programmers of the C-family of languages. This interoperability has established JSON as an ideal data-interchange language.</p>
+
+        <h3>The Evolution of JSON</h3>
+        <p>The JSON format was originally specified by Douglas Crockford, evolving from the need for a more efficient data-interchange format. Over the years, JSON has become integral to web applications for its ease of use in transmitting data between servers and web applications.</p>
+
+        <h3>Why Choose JSON?</h3>
+        <p>JSON's popularity stems from its simplicity and practicality. Being both easy to read and write for humans, and simple to parse and generate for machines, JSON serves as a versatile format suitable for a wide range of applications.</p>
+    </section>
+
+    <!-- Parsing JSON Data Section -->
+    <section id="parsing-json-data">
+        <h2>Parsing JSON Data</h2>
+        <p>Exploring different methods to parse JSON data in various programming languages:</p>
+
+        <div class="language">
+            <h3>JavaScript</h3>
+            <pre><code>let jsonData = '{"name": "John", "age": 30, "city": "New York"}';
+let obj = JSON.parse(jsonData);</code></pre>
+        </div>
+
+        <div class="language">
+            <h3>PHP</h3>
+            <pre><code>$jsonData = '{"name": "John", "age": 30, "city": "New York"}';
+$obj = json_decode($jsonData);</code></pre>
+        </div>
+
+        <div class="language">
+            <h3>Java</h3>
+            <pre><code>import org.json.JSONObject;
+String jsonData = "{\"name\": \"John\", \"age\": 30, \"city\": \"New York\"}";
+JSONObject obj = new JSONObject(jsonData);</code></pre>
+        </div>
+
+        <div class="language">
+            <h3>Python</h3>
+            <pre><code>import json
+jsonData = '{"name": "John", "age": 30, "city": "New York"}'
+obj = json.loads(jsonData)</code></pre>
+        </div>
+
+        <div class="language">
+            <h3>C++</h3>
+            <pre><code>#include <nlohmann json.hpp="">
+using json = nlohmann::json;
+json jsonData = json::parse("{\"name\": \"John\", \"age\": 30, \"city\": \"New York\"}");</nlohmann></code></pre>
+        </div>
+
+        <!-- Swift -->
+        <div class="language">
+            <h3>Swift</h3>
+            <pre><code>import Foundation
+let jsonData = "{\"name\": \"John\", \"age\": 30, \"city\": \"New York\"}".data(using: .utf8)!
+let obj = try! JSONSerialization.jsonObject(with: jsonData, options: [])</code></pre>
+        </div>
+
+        <!-- Go -->
+        <div class="language">
+            <h3>Go</h3>
+            <pre><code>import "encoding/json"
+jsonData := []byte(`{"name": "John", "age": 30, "city": "New York"}`)
+var obj map[string]interface{}
+json.Unmarshal(jsonData, &obj)</code></pre>
+        </div>
+
+        <!-- Objective-C -->
+        <div class="language">
+            <h3>Objective-C</h3>
+            <pre><code>NSString *jsonData = @"{\"name\": \"John\", \"age\": 30, \"city\": \"New York\"}";
+NSData *data = [jsonData dataUsingEncoding:NSUTF8StringEncoding];
+NSDictionary *obj = [NSJSONSerialization JSONObjectWithData:data options:kNilOptions error:nil];</code></pre>
+        </div>
+
+        <!-- Ruby -->
+        <div class="language">
+            <h3>Ruby</h3>
+            <pre><code>require 'json'
+jsonData = '{"name": "John", "age": 30, "city": "New York"}'
+obj = JSON.parse(jsonData)</code></pre>
+        </div>
+
+        <!-- Shell -->
+        <div class="language">
+            <h3>Shell</h3>
+            <pre><code>jsonData='{"name": "John", "age": 30, "city": "New York"}'
+echo $jsonData | jq '.'</code></pre>
+        </div>
+
+        <!-- Lua -->
+        <div class="language">
+            <h3>Lua</h3>
+            <pre><code>local json = require("json")
+local jsonData = '{"name": "John", "age": 30, "city": "New York"}'
+local obj = json.decode(jsonData)</code></pre>
+        </div>
+
+        <!-- .NET/C# -->
+        <div class="language">
+            <h3>.NET/C#</h3>
+            <pre><code>using System.Text.Json;
+string jsonData = "{\"name\": \"John\", \"age\": 30, \"city\": \"New York\"}";
+JsonDocument doc = JsonDocument.Parse(jsonData);</code></pre>
+        </div>
+
+
+    </section>
+
+    <!-- Parsing JSON Data - FAQs Section -->
+    <section id="faq">
+        <h2>FAQs on Parsing JSON Data</h2>
+        <div class="faq-item">
+            <h3>What is JSON parsing?</h3>
+            <p>JSON parsing is the process of converting JSON text data into a native object or data structure that can be used in programming languages.</p>
+        </div>
+        <div class="faq-item">
+            <h3>Why do we need to parse JSON data?</h3>
+            <p>Parsing JSON data is necessary to transform data from a string format, which is how it's usually transmitted and stored, into a usable format in programming environments.</p>
+        </div>
+        <div class="faq-item">
+            <h3>Can JSON parsing throw errors?</h3>
+            <p>Yes, JSON parsing can throw errors, particularly if the JSON data is malformed or if the parsing operation encounters unexpected data types or structures.</p>
+        </div>
+        <div class="faq-item">
+            <h3>How can I handle errors during JSON parsing?</h3>
+            <p>Most programming languages provide mechanisms to handle parsing errors, such as try-catch blocks, which allow for graceful error handling and debugging.</p>
+        </div>
+        <div class="faq-item">
+            <h3>Is JSON parsing different in each programming language?</h3>
+            <p>While the fundamental concept of JSON parsing is similar across languages, the implementation and specific methods can vary. Each language has its own libraries or built-in functions for parsing JSON data.</p>
+        </div>
+        <div class="faq-item">
+            <h3>Can I parse JSON data from a file or only from a string?</h3>
+            <p>JSON data can be parsed both from a string and directly from a file, depending on the programming language and available libraries. Most environments support both methods.</p>
+        </div>
+    </section>
+
+
+    <!-- Footer Section -->
+    <footer>
+        <p>&copy; 2023 Json parse. All rights reserved.</p>
+        <p><a href="index.html">Visit our website</a></p>
+        <p>
+            <a href="#">Terms of Service</a> |
+            <a href="#">Privacy Policy</a>
+        </p>
+    </footer>
+
+
+</div>
+
+<script src="static/js/brain2.js"></script>
+
+<script>
+    window.onload = function() {
+      var str = "{    \"sites\": [    { \"name\":\"JSON Online Parse\" , \"url\":\"www.json.cn\" },     { \"name\":\"Google\" , \"url\":\"www.google.com\" },     { \"name\":\"Introducing JSON\" , \"url\":\"www.json.org\" }    ]}";
+      $('#json-src').val(str);
+      $('#json-src').keyup();
+      checkDomain();
+    }
+
+</script>
+
+
+</body>
+</html>

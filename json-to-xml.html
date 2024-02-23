@@ -1,0 +1,336 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Json parse - Your Ultimate JSON Tool</title>
+    <meta name="description" content="Efficiently convert JSON to XML with Json parse's advanced tools. Experience seamless, accurate JSON to XML transformations for your data integration needs.">
+    <!-- Add other SEO-relevant meta tags here -->
+    <!-- jQuery文件。务必在bootstrap.min.js 之前引入 -->
+    <link href="static/css/json-style.css" rel="stylesheet">
+    <link rel="stylesheet" href="static/css/font-awesome.min.css">
+    <script src="static/js/jquery.min.js"></script>
+    <script src="static/js/clipboard.min.js"></script>
+    <script src="static/js/FileSaver.min.js"></script>
+    <script src="static/js/jquery.json2xml.js"></script>
+    <style>
+ /* Reset and General Styles */
+body, h2, h3, p, ul, ol {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+body {
+    background-color: #f9f9f9;
+    color: #333;
+    line-height: 1.6;
+}
+
+.container {
+    max-width: 1200px; /* 控制最大宽度 */
+    width: 90%; /* 默认宽度为屏幕宽度的90% */
+    margin: auto; /* 水平居中 */
+    overflow: hidden;
+    padding: 20px 0; /* 增加上下的空间 */
+}
+
+/* Header Styles */
+header {
+    background-color: #4CAF50;
+    color: #fff;
+    padding: 1rem 0;
+    text-align: center;
+}
+
+header nav ul {
+    padding: 0;
+    list-style: none;
+}
+
+header nav ul li {
+    display: inline;
+    margin: 0 15px;
+}
+
+header nav ul li a {
+    color: #fff;
+    text-decoration: none;
+    font-size: 1.1em;
+}
+
+/* Section Styles */
+section {
+    background-color: #fff;
+    border: 1px solid #ddd;
+    padding: 20px;
+    margin: 20px 0;
+    border-radius: 8px;
+}
+
+h2 {
+    background-color: #e7e7e7;
+    padding: 10px;
+    margin: -20px -20px 20px -20px;
+    border-bottom: 1px solid #ddd;
+}
+
+h3 {
+    margin-bottom: 10px;
+    color: #4CAF50;
+}
+
+p, ul, ol {
+    margin-bottom: 10px;
+    padding: 0 15px;
+}
+
+ul, ol {
+    padding-left: 20px;
+}
+
+/* JSON Tool Experience Section */
+
+#json-tool-experience {
+    height: 100vh; /* 保持最小高度为视口高度，确保足够的空间 */
+    padding: 20px; /* 添加一些内边距以防止内容溢出 */
+    //display: flex;
+    align-items: stretch; /* 确保子元素拉伸填满高度 */
+}
+
+.tool-container {
+    display: flex;
+    width: 100%; /* 确保 tool-container 占据整个区域宽度 */
+    //height: 92%; /* tool-container 高度自适应 */
+    height: calc(100% - 40px); /* 减去内边距 */
+    //gap: 20px;
+}
+
+.input-area, .output-area {
+    flex-basis: 50%; /* 每个区域分配50%的宽度 */
+    flex-grow: 0; /* 阻止根据内容扩张 */
+    flex-shrink: 0; /* 阻止根据内容收缩 */
+    display: flex;
+    flex-direction: column;
+    overflow: hidden; /* 防止内容溢出 */
+}
+
+.input-area textarea, .output-area .formatted-json {
+    width: 98%;
+    height: 100%;
+    overflow: auto; /* 超出内容时显示滚动条 */
+    resize: none;
+    padding: 4px;
+    border: 1px solid #ccc;
+}
+
+/* Textarea and Formatted JSON Styles */
+.input-area textarea {
+    font-size: 1em;
+    line-height: 1.5;
+}
+
+
+/* FAQ Section */
+#faq .faq-item {
+    border: 1px solid #ccc;
+    padding: 15px;
+    margin: 20px 0;
+    border-radius: 8px;
+}
+
+/* Mobile Responsiveness */
+@media screen and (max-width: 768px) {
+    .container {
+        width: 95%;
+    }
+
+    #json-tool-experience {
+        height: auto; /* 移动设备上高度自适应 */
+        //padding: 10px; /* 在移动设备上减少内边距 */
+    }
+
+    header nav ul li {
+        display: block;
+        margin: 10px 0;
+    }
+
+    .tool-container {
+        flex-direction: column; /* 在移动设备上堆叠这两个区域 */
+    }
+
+    .input-area, .output-area {
+        flex-basis: auto; /* 移动设备上自动调整宽度 */
+    }
+}
+
+
+/* Footer Styles */
+footer {
+    background-color: #4CAF50; /* 与 header 风格保持一致 */
+    color: #fff;
+    text-align: center;
+    padding: 20px 0;
+    margin-top: 30px; /* 在内容和 footer 之间添加一些空间 */
+    font-size: 0.9em;
+}
+
+footer a {
+    color: #fff;
+    text-decoration: none;
+}
+
+footer a:hover {
+    text-decoration: underline;
+}
+
+
+    </style>
+</head>
+<body>
+
+<div class="container">
+
+
+    <!-- Header Section -->
+    <header>
+        <nav>
+            <img src="static/picture/96.jpg" alt="Json parse Logo" id="logo">
+            <ul>
+                <li><a href="parsing-json.html" target="_blank">Parsing JSON Data</a></li>
+                <li><a href="" target="_blank">JSON to XML</a></li>
+                <li><a href="xml-to-json.html" target="_blank">XML to JSON</a></li>
+                <li><a href="json-compression.html" target="_blank">JSON Compression</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <!-- JSON Tool Experience Section -->
+    <section id="json-tool-experience">
+        <h2>JSON Tool Experience</h2>
+        <div class="tool-container">
+            <div class="input-area">
+                <h3>Enter Your JSON String</h3>
+                <textarea id="json-src" placeholder="Paste your JSON string here..."></textarea>
+            </div>
+            <div class="output-area">
+                <h3>Formatted XML Output</h3>
+                <div class="formatted-json">
+                    <!-- Formatted JSON Output will be shown here -->
+<!--                    <p class="editor-tip">Click on key and value to edit</p>-->
+                    <div id="line-num">
+                    </div>
+                    <div id="json-target"></div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Content for Introduction to JSON, JSON Syntax, and JSON vs XML sections will follow in subsequent responses. -->
+
+    <!-- What is JSON to XML Section -->
+    <section id="what-is-json-to-xml">
+        <h2>What is JSON to XML Conversion?</h2>
+        <p>JSON to XML conversion is a process of transforming data formatted in JSON (JavaScript Object Notation) - a lightweight, text-based, language-independent data interchange format - into XML (eXtensible Markup Language), which is a more verbose and structured format often used for complex document structures and web services.</p>
+
+        <h3>Why Convert JSON to XML?</h3>
+        <p>Although JSON has become increasingly popular due to its simplicity and speed, XML is still widely used in many legacy systems, especially in enterprise environments and various web services. Converting JSON to XML enables seamless data integration across different systems that use these formats.</p>
+
+        <h3>Key Differences Between JSON and XML</h3>
+        <ul>
+            <li><strong>Structure:</strong> JSON is data-oriented and less verbose, whereas XML is document-oriented and more structured with tags.</li>
+            <li><strong>Usability:</strong> JSON is easier to parse and often used in web applications, while XML provides robustness for complex data structures.</li>
+            <li><strong>Human Readability:</strong> Both formats are human-readable, but XML's strict structure makes it more suitable for complex document formats.</li>
+        </ul>
+
+        <h3>Applications of JSON to XML Conversion</h3>
+        <p>Converting JSON to XML is essential in scenarios where integration between modern web applications (often using JSON) and traditional systems (still relying on XML) is required. It also plays a crucial role in data migration, enterprise data management, and web service communication.</p>
+    </section>
+
+
+    <!-- JSON vs XML Section -->
+    <section id="json-vs-xml">
+        <h2>JSON vs XML</h2>
+        <p>In the world of data interchange, JSON and XML are two prominent formats. Understanding their differences and similarities is key to choosing the right format for your data needs.</p>
+
+        <h3>Similarities Between JSON and XML</h3>
+        <p>Both JSON and XML are self-describing formats that are human-readable and hierarchical. They can be parsed and used by many programming languages and are capable of representing complex data structures.</p>
+
+        <h3>Differences Between JSON and XML</h3>
+        <p>The main differences lie in syntax and usability. JSON is less verbose, does not use end tags, and can handle arrays natively. It is generally considered faster to read and write, and easier to parse than XML.</p>
+
+        <h3>Advantages of JSON over XML</h3>
+        <p>JSON's minimalism and efficiency in parsing make it a better choice for web applications, especially when speed and simplicity are paramount. Its compatibility with JavaScript and ease of integration into web platforms give it an edge over XML in modern web development.</p>
+    </section>
+
+
+    <!-- JSON to XML FAQs Section -->
+    <section id="faq">
+        <h2>FAQs on JSON to XML Conversion</h2>
+
+        <div class="faq-item">
+            <h3>What are the benefits of converting JSON to XML?</h3>
+            <p>Converting JSON to XML allows for data integration with systems that require XML format. It also enables data to be used in contexts where XML's verbosity and strict structure are necessary, such as in document-centric applications.</p>
+        </div>
+
+        <div class="faq-item">
+            <h3>Is there any data loss during JSON to XML conversion?</h3>
+            <p>Typically, there is no data loss in the conversion process, but attention must be paid to XML's stricter structuring requirements, which might require additional data formatting.</p>
+        </div>
+
+        <div class="faq-item">
+            <h3>Can all JSON data be converted to XML?</h3>
+            <p>Most JSON data can be converted to XML; however, JSON structures that are extremely nested or complex may require careful handling to ensure proper XML formatting.</p>
+        </div>
+
+        <div class="faq-item">
+            <h3>How does JSON to XML conversion handle arrays and objects?</h3>
+            <p>JSON arrays and objects are typically converted to XML elements. Each item in a JSON array becomes an individual XML element, while JSON objects are mapped to XML elements with corresponding sub-elements.</p>
+        </div>
+
+        <div class="faq-item">
+            <h3>Are there any tools or libraries to automate JSON to XML conversion?</h3>
+            <p>Yes, there are numerous tools and libraries available in various programming languages that facilitate automatic JSON to XML conversion, reducing the need for manual coding.</p>
+        </div>
+
+        <div class="faq-item">
+            <h3>What are the challenges associated with JSON to XML conversion?</h3>
+            <p>Challenges include handling different data types and structures, such as nested objects or arrays, and ensuring that the conversion process respects XML's more rigid structure and syntax requirements.</p>
+        </div>
+    </section>
+
+
+    <!-- Footer Section -->
+    <footer>
+        <p>&copy; 2023 Json parse. All rights reserved.</p>
+        <p><a href="index.html">Visit our website</a></p>
+        <p>
+            <a href="#">Terms of Service</a> |
+            <a href="#">Privacy Policy</a>
+        </p>
+    </footer>
+
+
+</div>
+
+<script src="static/js/brain2.js"></script>
+
+<script>
+$('#json-src').off('keyup');
+    $("#json-src").keyup(function() {
+        parseJson();
+        json2xml();
+    });
+
+    window.onload = function() {
+      var str = "{    \"sites\": [    { \"name\":\"JSON Online Parse\" , \"url\":\"www.json.cn\" },     { \"name\":\"Google\" , \"url\":\"www.google.com\" },     { \"name\":\"Introducing JSON\" , \"url\":\"www.json.org\" }    ]}";
+      $('#json-src').val(str);
+      $('#json-src').keyup();
+    }
+
+
+</script>
+
+</body>
+</html>
